@@ -28,19 +28,4 @@ public class UserController {
         return Result.success(userService.save(user));
     }
 
-    @GetMapping("/selectById")
-    public Result<User> selectById(@RequestParam("id") int id) {
-        return Result.success(userService.selectById(id));
-    }
-
-    @DeleteMapping("/deleteById")
-    public Result<Boolean> deleteById(@RequestParam("id") int id) {
-        return Result.success(userService.removeById(id));
-    }
-
-    @PutMapping("/updateById")
-    public Result<Boolean> updateById(@RequestBody User user) {
-        return Result.success(userService.updateById(user));
-    }
-
 }
