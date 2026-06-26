@@ -39,9 +39,4 @@ public class UserController {
         return Result.success(userService.login(dto));
     }
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "ok";
-    }
-
 }
