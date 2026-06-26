@@ -1,13 +1,40 @@
 package com.czy.mall.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.czy.mall.dto.RegisterDTO;
 import com.czy.mall.entity.User;
 import com.czy.mall.mapper.UserMapper;
 import com.czy.mall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public boolean register(RegisterDTO dto) {
+        LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
+
+        wrapper.eq(User::getUsername, dto.getUsername());
+
+        if (this.count(wrapper) > 0) {
+            throw new RuntimeException("用户名已存在");
+        }
+
+        User user = new User();
+
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+
+        // BCrypt 加密
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        return this.save(user);
+    }
 }

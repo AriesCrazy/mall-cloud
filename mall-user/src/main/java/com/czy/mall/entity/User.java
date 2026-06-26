@@ -16,18 +16,21 @@ public class User {
 
     private String username;
 
+    /**
+     * BCrypt 加密后的密码
+     */
     private String password;
+
+    /**
+     * 是否启用
+     */
+    private Integer status;
 
     private String nickname;
 
     private String email;
 
-    private String phone;
-
-    private Integer status;
-
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
 }
