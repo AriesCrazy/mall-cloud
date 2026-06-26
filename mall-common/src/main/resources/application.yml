@@ -1,0 +1,6 @@
+spring.application.name: mall-common
+
+
+jwt:
+  secret: iloveu
+  expire: 7200

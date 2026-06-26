@@ -9,5 +9,5 @@ import com.czy.mall.vo.LoginVO;
 public interface UserService extends IService<User> {
     boolean register(RegisterDTO dto);
 
-    LoginVO login(LoginDTO dto);
+    String login(LoginDTO dto);
 }
