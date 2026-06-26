@@ -1,5 +1,6 @@
 package com.czy.mall.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,14 +13,19 @@ import com.czy.mall.service.UserService;
 import com.czy.mall.vo.LoginVO;
 import com.czy.mall.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public boolean register(RegisterDTO dto) {
@@ -57,6 +63,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new RuntimeException("密码错误");
         }
 
-        return JwtUtil.createToken(user.getId(), user.getUsername());
+        String token = JwtUtil.createToken(user.getId(), user.getUsername());
+
+        stringRedisTemplate.opsForValue().set(
+                "login:" + token,
+                JSONUtil.toJsonStr(user),
+                Duration.ofHours(2)
+        );
+
+        return token;
     }
 }
