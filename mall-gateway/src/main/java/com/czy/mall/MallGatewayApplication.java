@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MallGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallGatewayApplication.class, args);
+        SpringApplication.run(MallGatewayApplication.class,args);
     }
 
 }

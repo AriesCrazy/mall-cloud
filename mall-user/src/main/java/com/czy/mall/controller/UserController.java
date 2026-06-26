@@ -6,8 +6,6 @@ import com.czy.mall.dto.RegisterDTO;
 import com.czy.mall.entity.User;
 import com.czy.mall.service.UserService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +36,12 @@ public class UserController {
 
     @PostMapping("/login")
     public Result<String> login(@RequestBody @Valid LoginDTO dto) {
-
         return Result.success(userService.login(dto));
+    }
 
+    @GetMapping("/hello")
+    public String hello(){
+        return "ok";
     }
 
 }
