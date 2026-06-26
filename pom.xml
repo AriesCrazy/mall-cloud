@@ -43,6 +43,11 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.czy.mall</groupId>
+                <artifactId>mall-common</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
