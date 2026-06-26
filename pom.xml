@@ -29,6 +29,8 @@
         <!-- Spring -->
         <spring-boot.version>3.2.4</spring-boot.version>
 
+        <lombok.version>1.18.30</lombok.version>
+
     </properties>
 
     <dependencyManagement>
@@ -47,6 +49,12 @@
                 <groupId>com.czy.mall</groupId>
                 <artifactId>mall-common</artifactId>
                 <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
