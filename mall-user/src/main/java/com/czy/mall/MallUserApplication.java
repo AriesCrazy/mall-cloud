@@ -1,4 +1,4 @@
-package com.czy.mall.malluser;
+package com.czy.mall;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
