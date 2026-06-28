@@ -40,9 +40,5 @@ public class UserController {
         return Result.success(userService.login(dto));
     }
 
-    @PostMapping("/findUsersByCondition")
-    public Result<String> findUsersByCondition(@RequestBody UserDTO userDTO) {
-        return userService.findUsersByCondition(userDTO);
-    }
 
 }

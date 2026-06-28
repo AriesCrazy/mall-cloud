@@ -12,5 +12,4 @@ public interface UserService extends IService<User> {
 
     String login(LoginDTO dto);
 
-    Result<String> findUsersByCondition(UserDTO userDTO);
 }

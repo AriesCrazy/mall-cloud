@@ -79,26 +79,4 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return token;
     }
 
-    @Transactional
-    @Override
-    public Result<String> findUsersByCondition(UserDTO userDTO) {
-        if (isAllEmpty(userDTO)) {
-            throw new RuntimeException("参数不能为空");
-        }
-        List<User> users = userMapper.selectByUser(userDTO);
-        if (users.size()==0) {
-            throw new RuntimeException("用户不存在");
-        }
-        return Result.success(users.toString());
-    }
-
-    private boolean isAllEmpty(UserDTO dto) {
-        return dto.getId() == null
-                && (dto.getUsername() == null || dto.getUsername().isEmpty())
-                && dto.getStatus() == null
-                && (dto.getNickname() == null || dto.getNickname().isEmpty())
-                && (dto.getEmail() == null || dto.getEmail().isEmpty())
-                && dto.getCreateTime() == null
-                && dto.getUpdateTime() == null;
-    }
 }
