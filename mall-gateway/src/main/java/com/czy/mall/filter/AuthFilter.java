@@ -12,51 +12,60 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    private static final List<String> WHITELIST = List.of(
+            "/user/login",
+            "/user/register"
+    );
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
-        ServerHttpRequest request = exchange.getRequest();
+        String path = exchange.getRequest().getURI().getPath();
 
-        String path = request.getURI().getPath();
-
-        // 放行登录接口
-        if (path.contains("/login") || path.contains("/register")) {
+        // 白名单
+        if (WHITELIST.contains(path)) {
             return chain.filter(exchange);
         }
 
-        // 获取 token
-        String token = request.getHeaders().getFirst("Authorization");
+        String auth = exchange.getRequest().getHeaders().getFirst("Authorization");
 
-        if (token == null || token.isEmpty()) {
+        if (auth == null || !auth.startsWith("Bearer ")) {
             return unauthorized(exchange);
         }
 
-        // 校验 JWT
+        String token = auth.substring(7);
+
+        // JWT 校验
         if (!JwtUtil.verify(token)) {
             return unauthorized(exchange);
         }
 
-        // 校验 Redis
-        String userJson = stringRedisTemplate.opsForValue()
-                .get("login:" + token);
+        // Redis 校验
+        String key = "login:token:" + token;
+        String userJson = stringRedisTemplate.opsForValue().get(key);
 
         if (userJson == null) {
             return unauthorized(exchange);
         }
 
-        return chain.filter(exchange);
+        // 可选：传递用户信息给下游服务
+        ServerHttpRequest request = exchange.getRequest().mutate()
+                .header("user", userJson)
+                .build();
+
+        return chain.filter(exchange.mutate().request(request).build());
     }
 
     private Mono<Void> unauthorized(ServerWebExchange exchange) {
-
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-
         return exchange.getResponse().setComplete();
     }
 
