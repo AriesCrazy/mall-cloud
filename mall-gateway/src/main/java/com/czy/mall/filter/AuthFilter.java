@@ -35,13 +35,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
-        String auth = exchange.getRequest().getHeaders().getFirst("Authorization");
+        String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 
-        if (auth == null || !auth.startsWith("Bearer ")) {
+        if (token == null) {
             return unauthorized(exchange);
         }
-
-        String token = auth.substring(7);
 
         // JWT 校验
         if (!JwtUtil.verify(token)) {

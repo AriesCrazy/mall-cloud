@@ -56,7 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .one();
 
         if (user == null) {
-            throw new RuntimeException("用户名不存在");
+            throw new RuntimeException("用户不存在");
         }
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
@@ -66,7 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String token = JwtUtil.createToken(user.getId(), user.getUsername());
 
         stringRedisTemplate.opsForValue().set(
-                "login:" + token,
+                "login:token:" + token,
                 JSONUtil.toJsonStr(user),
                 Duration.ofHours(2)
         );
