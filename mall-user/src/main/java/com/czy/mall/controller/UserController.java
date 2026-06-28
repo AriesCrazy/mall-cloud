@@ -3,6 +3,7 @@ package com.czy.mall.controller;
 import com.czy.mall.common.result.Result;
 import com.czy.mall.dto.LoginDTO;
 import com.czy.mall.dto.RegisterDTO;
+import com.czy.mall.dto.UserDTO;
 import com.czy.mall.entity.User;
 import com.czy.mall.service.UserService;
 import jakarta.validation.Valid;
@@ -37,6 +38,11 @@ public class UserController {
     @PostMapping("/login")
     public Result<String> login(@RequestBody @Valid LoginDTO dto) {
         return Result.success(userService.login(dto));
+    }
+
+    @PostMapping("/findUsersByCondition")
+    public Result<String> findUsersByCondition(@RequestBody UserDTO userDTO) {
+        return userService.findUsersByCondition(userDTO);
     }
 
 }

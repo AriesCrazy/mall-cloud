@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.czy.mall.mapper.UserMapper">
+
+    <select id="selectByUser" resultType="com.czy.mall.entity.User">
+        SELECT *
+        FROM sys_user
+        <where>
+
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
+
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+
+            <if test="nickname != null and nickname != ''">
+                AND nickname = #{nickname}
+            </if>
+
+            <if test="email != null and email != ''">
+                AND email = #{email}
+            </if>
+
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+
+            <if test="updateTime != null">
+                AND update_time = #{updateTime}
+            </if>
+
+        </where>
+    </select>
+</mapper>
