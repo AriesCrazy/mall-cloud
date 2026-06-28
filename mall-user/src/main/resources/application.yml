@@ -1,29 +1,21 @@
-server:
-  port: 8081
-
 spring:
   application:
     name: mall-user
-  datasource:
-    url: jdbc:mysql://192.168.1.102:3306/mall_user?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  data:
-    redis:
-      host: 192.168.1.102
-      port: 6379
-      password:
-      database: 0
+
+  # ==================== 关键：使用 spring.config.import ====================
+  config:
+    import: optional:nacos:mall-user.yaml?refreshEnabled=true
+
   cloud:
     nacos:
+      server-addr: 192.168.1.102:8848
+      config:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        group: DEFAULT_GROUP          # 可选，默认就是 DEFAULT_GROUP
+        namespace: public
+        file-extension: yaml
+        # username: nacos
+        # password: nacos
+
       discovery:
-        server-addr: 192.168.1.102:8848
-
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-jwt:
-  secret: iloveu
-  expire: 7200
+        server-addr: ${spring.cloud.nacos.server-addr}
